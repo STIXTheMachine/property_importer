@@ -1,3 +1,3 @@
-class Unit < Property
+class Unit < ApplicationRecord
   belongs_to :property
 end
