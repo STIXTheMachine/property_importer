@@ -28,17 +28,20 @@ class ImportRow < ApplicationRecord
 
   def normalize_building_name
     return if building_name.blank?
-    building_name.squish!.upcase!
+    normalized = building_name.squish.upcase
+    self.building_name = normalized
   end
 
   def normalize_street_address
     return if street_address.blank?
-    street_address.squish!.upcase!
+    normalized = street_address.squish.upcase
+    self.street_address = normalized
   end
 
   def normalize_city
     return if city.blank?
-    city.squish!.upcase!
+    normalized = city.squish.upcase
+    self.city = normalized
   end
 
   def normalize_state
@@ -80,10 +83,10 @@ class ImportRow < ApplicationRecord
   end
 
   def normalize_zip
-    return if zip.blank?
+    return if zip.blank? || zip.length < 5
     # Really not much we can do other than trim whitespace and strip the +4 if it's present
-    normalized = zip.squish.slice(0, 5)
-    zip = normalized
+    normalized = zip.squish.slice(0, 5).to_s
+    self.zip = normalized
   end
 
   # ================================
