@@ -1,23 +1,19 @@
-# frozen_string_literal: true
-
 class PropertyImportService
   require('csv')
 
-  # model: model to use for CSV row data
-  # file: file to import
-  def initialize(model, file)
-    @model = model
-    @file = file
+  # import_file: the actual file being imported
+  def initialize(import_file)
+    @total_rows = 0
+    @import_file = import_file
   end
 
   # Parses a CSV file and saves rows to local storage to allow for validation and editing before sending to db
   def call
-    csv = CSV.read(@file, headers: true)
-
+    csv = CSV.read(@import_file, headers: true)
     csv.each_with_index do |row, index|
-      # TODO: Make row model
-      # TODO: Save each row to local ActiveStorage
-      # TODO: add turbo stream broadcast
+      @total_rows += 1
+      import_row = ImportRow.new(row.to_hash)
+      import_row.save
     end
   end
 end
