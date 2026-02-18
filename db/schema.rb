@@ -10,9 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_17_003720) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_17_035044) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "import_rows", force: :cascade do |t|
+    t.string "building_name"
+    t.string "city"
+    t.datetime "created_at", null: false
+    t.string "state"
+    t.string "street_address"
+    t.string "unit"
+    t.datetime "updated_at", null: false
+    t.string "zip"
+  end
 
   create_table "properties", force: :cascade do |t|
     t.string "building_name"
@@ -23,4 +34,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_17_003720) do
     t.datetime "updated_at", null: false
     t.string "zip"
   end
+
+  create_table "units", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "number"
+    t.bigint "property_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["property_id"], name: "index_units_on_property_id"
+  end
+
+  add_foreign_key "units", "properties"
 end
